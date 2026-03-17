@@ -134,7 +134,13 @@ export default function Sidebar() {
         <section className="flex-1 p-8">
         <Outlet />
         </section>
+
         </div>
+        <footer className="py-5">
+            <p className="text-center">
+                Todos los derechos reservados Belen Canalda {new Date().getFullYear()}
+            </p>
+        </footer>
 
         <ToastContainer
         position="top-right"

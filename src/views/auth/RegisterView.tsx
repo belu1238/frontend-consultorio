@@ -55,7 +55,7 @@ export default function RegisterView() {
                 id="nombre"
                 type="text"
                 placeholder="tu nombre"
-                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 {...register("nombre", {
                   required: "El Nombre es obligatorio",
                 })}
@@ -73,7 +73,7 @@ export default function RegisterView() {
                 id="apellido"
                 type="text"
                 placeholder="tu apellido"
-                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 {...register("apellido", {
                   required: "El Apellido es obligatorio",
                 })}
@@ -91,7 +91,7 @@ export default function RegisterView() {
                 id="email"
                 type="email"
                 placeholder="tu@email.com"
-                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 {...register("email", {
                   required: "El Email es obligatorio",
                   pattern: {
@@ -112,7 +112,7 @@ export default function RegisterView() {
                 id="contraseña"
                 type="password"
                 placeholder="*********"
-                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 {...register("password", {
                   required: "La contraseña es obligatoria",
                   minLength: {
@@ -134,7 +134,7 @@ export default function RegisterView() {
                 id="password_confirmation"
                 type="password"
                 placeholder="Repetir contraseña"
-                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+                className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 {...register("password_confirmation", {
                   required: "La contraseña de confirmación es obligatoria",
                   validate: (value) => value === password || "Las contraseñas no coinciden"

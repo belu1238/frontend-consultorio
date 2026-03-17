@@ -191,3 +191,24 @@ export type SessionCreate = z.infer<typeof sessionCreateSchema>
 export type SessionDetail = z.infer<typeof sessionDetailSchema>
 export type SessionEdit = z.infer<typeof sessionEditSchema>
 
+// User schemas
+export const authSchema = z.object({
+    id: z.number(),
+    nombre: z.string(),
+    apellido: z.string(),
+    email: z.string().email(),
+    password: z.string(),
+    password_confirmation: z.string(),
+    token: z.string() 
+})
+
+type Auth = z.infer<typeof authSchema> 
+export type LoginForm = Pick<Auth, 'email' | 'password'>
+export type RegisterForm = Pick<Auth, 'nombre' | 'apellido' | 'email' | 'password' | 'password_confirmation'>
+export type ConfirmAccount = Pick<Auth, 'token'>
+export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
+export type ForgotPasswordForm = Pick<Auth, 'email'>
+export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
+
+
+

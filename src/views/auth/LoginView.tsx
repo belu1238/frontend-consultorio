@@ -1,15 +1,28 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import type { LoginForm } from "../../types";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../../api/AuthAPI";
+import { toast } from "react-toastify";
 
 export default function LoginView() {
+  const navigate = useNavigate()
   const initialValues : LoginForm = {
     email: '',
     password: ''
   }
 
   const {register, handleSubmit, formState: {errors}} = useForm({defaultValues: initialValues})
+
+  const {mutate} = useMutation({
+    mutationFn: login,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => navigate('/')
+  })
+
+  const handleLogin = (formData: LoginForm) => mutate(formData)
+
   return (
     <>
     <div className="flex flex-1 justify-center items-center min-h-full py-12 px-4 ">
@@ -18,7 +31,7 @@ export default function LoginView() {
           <h1 className="text-4xl font-serif font-black">Bienvenido</h1>
         </div>
         <form
-          onSubmit={handleSubmit(() => {})}
+          onSubmit={handleSubmit(handleLogin)}
           className=""
           noValidate
         >
@@ -30,7 +43,7 @@ export default function LoginView() {
               id="email"
               type="email"
               placeholder="tu@email.com"
-              className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+              className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               {...register("email", {
                 required: "El Email es obligatorio",
                 pattern: {
@@ -51,7 +64,7 @@ export default function LoginView() {
               id="password"
               type="password"
               placeholder="*********"
-              className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+              className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               {...register("password", {
                 required: "La contraseña es obligatoria",
               })}
