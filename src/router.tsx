@@ -12,19 +12,13 @@ import ForgotPasswordView from "./views/auth/ForgotPasswordView";
 import ConfirmAccountView from "./views/auth/ConfirmAccountView";
 import RequestConfirmationCode from "./views/auth/RequestConfirmationCode";
 import NewPasswordView from "./views/auth/NewPasswordView";
+import PlaceView from "./views/places/PlaceView";
+
 
 export default function Router() {
     return(
         <BrowserRouter>
             <Routes>
-                <Route element={<Sidebar/>}>
-                    <Route path="/" element={<DashboardView />} index />
-                    <Route path="/calendario/:fechaUrl?" element={<Calendar />} />
-                    <Route path="/pacientes" element={<PatientView/>} /> 
-                    <Route path="/pacientes/:pacienteId" element={<PatientDetails/>} />                 
-                    <Route path="/lugares/:folderId/pacientes" element={<FolderView/>} />                 
-                </Route>
-
                 <Route element={<AuthLayout />}>
                     <Route path="/auth/login" element={<LoginView />} />
                     <Route path="/auth/register" element={<RegisterView />} />
@@ -33,6 +27,17 @@ export default function Router() {
                     <Route path="/auth/request-code" element={<RequestConfirmationCode />} />
                     <Route path="/auth/new-password" element={<NewPasswordView />} />
                 </Route>
+
+                <Route path="/lugares" element={<PlaceView />}/>
+
+                <Route element={<Sidebar/>}>
+                    <Route path="/" element={<DashboardView />} index />
+                    <Route path="/calendario/:fechaUrl?" element={<Calendar />} />
+                    <Route path="/pacientes" element={<PatientView/>} /> 
+                    <Route path="/pacientes/:pacienteId" element={<PatientDetails/>} />                 
+                    <Route path="/lugares/:folderId/pacientes" element={<FolderView/>} />                 
+                </Route>
+
             </Routes>
         </BrowserRouter>
     )

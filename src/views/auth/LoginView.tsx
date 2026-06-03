@@ -18,7 +18,7 @@ export default function LoginView() {
   const {mutate} = useMutation({
     mutationFn: login,
     onError: (error) => toast.error(error.message),
-    onSuccess: () => navigate('/')
+    onSuccess: () => navigate('/lugares')
   })
 
   const handleLogin = (formData: LoginForm) => mutate(formData)

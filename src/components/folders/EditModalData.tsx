@@ -11,8 +11,9 @@ import { toast } from "react-toastify";
 type EditModalDataProps = {
     data: FolderFormData
     folderId: Folder['id']
+    onClose: () => void
 }
-export default function EditModalData({data, folderId}: EditModalDataProps) {
+export default function EditModalData({data, folderId, onClose}: EditModalDataProps) {
     const navigate = useNavigate()
 
     const {register, handleSubmit, formState: {errors}} = useForm<FolderFormData>({defaultValues: {
@@ -25,8 +26,8 @@ export default function EditModalData({data, folderId}: EditModalDataProps) {
         onError: (error) => toast.error(error.message),
         onSuccess: (data) => {
             toast.success(data)
-            queryClient.invalidateQueries({queryKey:['folders']})
-            navigate('/')
+            queryClient.invalidateQueries({queryKey:['places']})
+            onClose()
         }
     })
 

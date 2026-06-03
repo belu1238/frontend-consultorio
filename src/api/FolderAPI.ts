@@ -14,6 +14,7 @@ export async function createFolder(formData : FolderFormData){
 }
 
 export async function getFolders(){
+    
     try {
         const { data } = await api(`/lugares`)
         const response = dashboardFolderSchema.safeParse(data)

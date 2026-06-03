@@ -17,6 +17,7 @@ import FolderDropdown from "../components/FolderDropdown";
 import EditFolderView from "../views/folders/EditFolderView";
 import DeleteFolderModal from "../components/folders/DeleteFolderModal";
 export default function Sidebar() {
+    const {data, isError, isLoading } = useAuth()
     const[openFolders, setOpenFolders]= useState(true) // true es para que esten abiertas las carpetas
     const navigate = useNavigate()
 
