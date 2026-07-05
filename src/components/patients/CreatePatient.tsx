@@ -6,37 +6,24 @@ import PatientForm from "./PatientForm";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPatient } from "../../api/PatientAPI";
 import { toast } from "react-toastify";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 
 export default function CreatePatient() {
   const navigate = useNavigate();
+  const queryCLient = useQueryClient();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const modalPatient = queryParams.get("newPatient");
   const show = modalPatient ? true : false;
 
-  const params = useParams();
-  const lugar_id = Number(params.lugar_id);
+  const activeFolderId = localStorage.getItem("folderId"); // Obtener el valor del lugar de atención activo desde el localStorage
 
   const initialValues: PatientCreate = {
     nombre: "",
     apellido: "",
     dni: 0,
     fecha_nacimiento: "",
-    edad: 0,
-    nombre_madre: "",
-    nombre_padre: "",
-    obra_social: "",
-    numero_beneficiario: "",
-    cuit_obra_social: 0,
-    situacion_frente_iva: "",
-    diagnostico: "",
-    medicacion: "",
-    colegio: "",
-    horario_presupuesto: "",
-    profesionales: "",
-    historia_clinica: "",
-    lugar_id: lugar_id,
+    IdTipoLugarAtencion: activeFolderId ? parseInt(activeFolderId) : 0, 
   };
 
   const {
@@ -46,32 +33,22 @@ export default function CreatePatient() {
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
 
-  const queryCLient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: createPatient,
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
       toast.success(data);
-      queryCLient.invalidateQueries({ queryKey: ["patients"] });
-      navigate("/pacientes");
+      queryCLient.invalidateQueries({ queryKey: ["patients", activeFolderId] });
+      navigate(location.pathname, {replace: true}) // Cerrar el modal después de guardar el paciente
       reset();
     },
   });
 
   const handleForm = (formData: PatientCreate) => {
-    // 1. Extraemos el lugarId que el usuario seleccionó en el <select> del formulario
-    const idSeleccionado = formData.lugar_id;
-
-    // 2. Verificamos que no sea 0 o vacío antes de enviar
-    if (!idSeleccionado || idSeleccionado === 0) {
-      toast.error("Por favor, selecciona un lugar de atención");
-      return;
-    }
-
     const data = {
-      formData,
-      folderId: idSeleccionado, // Ahora usamos el valor real del form
+      ...formData,
+      IdTipoLugarAtencion: activeFolderId ? parseInt(activeFolderId) : 0, // Asegurarse de que el valor sea un número
     }
     mutate(data);
   };

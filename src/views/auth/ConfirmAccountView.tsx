@@ -14,7 +14,7 @@ export default function ConfirmAccountView() {
     onError: (error) => toast.error(error.message),
     onSuccess: (data) => {
       toast.success(data)
-      navigate('/login')
+      navigate('/auth/login')
     }
   })
 

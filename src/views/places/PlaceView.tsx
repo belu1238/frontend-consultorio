@@ -10,8 +10,12 @@ import type { FolderFormData } from "../../types";
 import ErrorMessage from "../../components/ErrorMessage";
 import EditModalData from "../../components/folders/EditModalData";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function PlaceView() {
+    const navigate = useNavigate()
     const [editingFolder, setEditingFolder] = useState<number | string | null>(null);
     const { data, isLoading } = useQuery({
         queryKey: ['places'],
@@ -37,7 +41,8 @@ export default function PlaceView() {
     if(isLoading) return <p>Cargando...</p>
 
     return ( 
-        <div className="min-h-screen flex items-center justify-center ">
+        <div
+        className="min-h-screen flex items-center justify-center ">
             <div className="w-full max-w-4xl">
                 <div className="text-center space-y-6">
                 
@@ -49,6 +54,10 @@ export default function PlaceView() {
                     {data?.map((folder) => (
                         <div
                             key={folder.id}
+                            onClick={() => {
+                                localStorage.setItem('selectedFolder', folder.id.toString())
+                                navigate('/')
+                            }}
                             className="group flex items-center gap-4 p-6 bg-white rounded-md shadow cursor-pointer hover:bg-stone-100 hover:border-emerald-600 transition-colors"
                         >
                             <div className="w-14 h-14 rounded-lg bg-stone-200 flex items-center justify-center">

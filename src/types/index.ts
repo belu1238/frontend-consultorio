@@ -1,17 +1,46 @@
 import { z } from "zod";
 
-/** Folders */
-export const folderSchema = z.object({
+/** Lugar atencion */
+export const tipoLugarAtencionSchema = z.object({
     id: z.number(),
     nombre: z.string()
 })
 
 export const dashboardFolderSchema = z.array(
-    folderSchema.pick({ id: true, nombre: true })
+    tipoLugarAtencionSchema.pick({ id: true, nombre: true })
 )
-export type Folder = z.infer<typeof folderSchema>
-export type FolderFormData = Pick<Folder, 'nombre'>
+export type TipoLugarAtencion = z.infer<typeof tipoLugarAtencionSchema>
 
+// Obra social
+export const obraSocialSchema = z.object({
+    id: z.number(),
+    nombre: z.string(),   
+})
+
+// Especialidades y profesionales
+export const tipoEspecialidadSchema = z.object({
+    id: z.number(),
+    nombre: z.string()
+})
+
+export const especialistaSchema = z.object({
+    id: z.number(),
+    nombre: z.string(),
+    apellido: z.string(),
+    IdTipoEspecialidad: z.number()
+})
+
+export type TipoEspecialidad = z.infer<typeof tipoEspecialidadSchema>
+export type Especialista = z.infer<typeof especialistaSchema>
+
+// Tutores
+export const tutorSchema = z.object({
+    id: z.number(),
+    nombre: z.string(),
+    apellido: z.string(),
+    IdPaciente: z.number()
+})
+export type Tutor = z.infer<typeof tutorSchema>
 
 /** Pacientes */
 export const patientSchema = z.object({
@@ -21,42 +50,11 @@ export const patientSchema = z.object({
     dni: z.coerce.string(),
     fecha_nacimiento: z.string(),
     edad: z.number(),
-    nombre_madre: z.string(),
-    nombre_padre: z.string(),
-    obra_social: z.string(),
-    numero_beneficiario: z.string(),
-    cuit_obra_social: z.number(),
-    situacion_frente_iva: z.string(),
-    diagnostico: z.string(),
-    medicacion: z.string(),
-    colegio: z.string(),
     horario_presupuesto: z.string(),
-    profesionales: z.string(),
-    historia_clinica: z.string(),
-    lugar_id: z.number() // Para LECTURA
+    detalle_paciente: z.string(),
+    IdTipoLugarAtencion: z.number(),
 })
 
-export const patientFolderSchema = z.object({
-    id: z.number(),
-    nombre: z.string(),
-    apellido: z.string(),
-    dni: z.coerce.string(),
-    fecha_nacimiento: z.string(),
-    edad: z.number(),
-    nombre_madre: z.string(),
-    nombre_padre: z.string(),
-    obra_social: z.string(),
-    numero_beneficiario: z.string(),
-    cuit_obra_social: z.number(),
-    situacion_frente_iva: z.string(),
-    diagnostico: z.string(),
-    medicacion: z.string(),
-    colegio: z.string(),
-    horario_presupuesto: z.string(),
-    profesionales: z.string(),
-    historia_clinica: z.string(),
-    lugar_id: z.number()
-})
 
 //Schema para listar
 export const patientCardSchema = patientSchema.pick({ 
@@ -65,40 +63,104 @@ export const patientCardSchema = patientSchema.pick({
         apellido: true, 
         edad: true, 
         dni: true, 
-        colegio: true,
-        obra_social: true,
-        diagnostico: true,
-        lugar_id: true
+        IdTipoLugarAtencion: true
+}).extend({
+    colegio: z.string().optional(),
+    obra_social: z.string().optional(),
+    diagnostico: z.string().optional(),
 })
 
 
 export const patientCreateSchema = z.object({
-  nombre: z.string(),
-  apellido: z.string(),
-  dni: z.string(),
-  fecha_nacimiento: z.string(),
-  edad: z.number(),
-  nombre_madre: z.string(),
-  nombre_padre: z.string(),
-  obra_social: z.string(),
-  numero_beneficiario: z.string(),
-  cuit_obra_social: z.number(),
-  situacion_frente_iva: z.string(),
-  diagnostico: z.string(),
-  medicacion: z.string(),
-  colegio: z.string(),
-  horario_presupuesto: z.string(),
-  profesionales: z.string(),
-  historia_clinica: z.string(),
-  lugar_id: z.number().min(1, "Debe seleccionar un lugar"), 
+  nombre: z.string().min(1, "El nombre es obligatorio"),
+    apellido: z.string().min(1, "El apellido es obligatorio"),
+    dni: z.number().or(z.string().transform((val) => Number(val))),
+    fecha_nacimiento: z.string(),
+    horario_presupuesto: z.string().optional(),
+    edad: z.number().optional(),
+    
+    // Información Clinica
+    diagnostico: z.string().optional(),
+    medicacion: z.string().optional(),
+    detalle_paciente: z.string().optional(),
+
+    // Tutores
+    tutor: z.object({
+        nombre: z.string(),
+        apellido: z.string(),
+    }),
+    
+    // Obra Social
+    IdObraSocial: z.number().optional(),
+    numeroAfiliado: z.string().optional(),
+    fechaAlta: z.string().optional(),
+
+    // Información escolar y profesionales
+    colegio: z.string(),
+    IdtipoEspecialidad: z.number(),
+    especialista: z.union([
+        z.object({
+            id: z.number(),
+        }),
+        z.object({
+            id: z.literal(null).optional(), // No tiene ID todavía
+            nombre: z.string(),
+            apellido: z.string(),
+        })
+    ]),
+    IdTipoLugarAtencion: z.number(),
 });
 
 export const patientListSchema = z.array(patientCardSchema)
-export const patientFolderListSchema = z.array(patientFolderSchema)
 export type Patient = z.infer<typeof patientSchema>
 export type PatientCreate = z.infer<typeof patientCreateSchema>
 export type PatientCardList = z.infer<typeof patientCardSchema>
 export type PatientList = z.infer<typeof patientListSchema>
+
+export const pacienteObraSocialSchema = z.object({
+    id: z.number(),
+    IdPaciente: z.number(),
+    IdObraSocial: z.number(),
+    numeroAfiliado: z.string(),
+    fechaAlta: z.string(),
+    fechaBaja: z.string()
+})
+export type PacienteObraSocial = z.infer<typeof pacienteObraSocialSchema>
+
+export const pacienteEspecialistaSchema = z.object({
+    id: z.number(),
+    IdPaciente: z.number(),
+    IdEspecialista: z.number(),
+})
+export type PacienteEspecialistaSchema = z.infer<typeof pacienteEspecialistaSchema>
+
+/** MEDICACION */
+export const medicacionSchema = z.object({
+    id: z.number(),
+    nombre: z.string(),
+    IdPaciente: z.number(),
+    fechaRegistro: z.string()
+})
+export type Medicacion = z.infer<typeof medicacionSchema>
+
+/** DIAGNOSTICO */
+export const diagnosticoSchema = z.object({
+    id: z.number(),
+    IdPaciente: z.number(),
+    fecha: z.string(),
+    descripcion: z.string()
+})
+export type Diagnostico = z.infer<typeof diagnosticoSchema>
+
+/** ARCHIVO DIAGNOSTICO */
+export const archivoDiagnosticoSchema = z.object({
+    id: z.number(),
+    diagnosticoId: z.number(),
+    nombre: z.string(),
+    url: z.string(),
+    fechaSubida: z.string()
+})
+export type ArchivoDiagnostico = z.infer<typeof archivoDiagnosticoSchema>
 
 /** ESTADOS */
 export const statusSchema = z.object({

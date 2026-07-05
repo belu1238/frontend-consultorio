@@ -1,8 +1,8 @@
 import api from "../lib/axios";
-import { dashboardFolderSchema,  patientFolderListSchema, type Folder, type FolderFormData } from "../types";
+import { dashboardFolderSchema, tipoLugarAtencionSchema, type TipoLugarAtencion} from "../types";
 import { isAxiosError } from "axios";
 
-export async function createFolder(formData : FolderFormData){
+export async function createFolder(formData : TipoLugarAtencion){
     try {
         const { data } = await api.post('/lugares', formData)
         return data
@@ -40,7 +40,7 @@ export async function getFolderById(id: Folder['id']){
 }
 
 type FolderAPIType = {
-    formData : FolderFormData,
+    formData : TipoLugarAtencion,
     folderId : Folder['id']
 }
 
@@ -69,7 +69,7 @@ export async function deleteFolder(id: Folder['id']) {
 export async function getPatientByFolder(id: Folder['id']){
     try {
         const { data } = await api(`/lugares/${id}/pacientes`)
-        const response = patientFolderListSchema.safeParse(data)
+        const response = tipoLugarAtencionSchema.safeParse(data)
         if(response.success){
             return response.data
         }

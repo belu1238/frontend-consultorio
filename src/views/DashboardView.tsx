@@ -5,9 +5,10 @@ import { es } from 'date-fns/locale';
 import { useNavigate } from "react-router-dom";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa6";
-
+import { useAuth } from "../hooks/useAuth";
 export default function DashboardView() {
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     const {data, isLoading} = useQuery({
         queryKey: ['sessionsByOrder'],
@@ -15,11 +16,12 @@ export default function DashboardView() {
     })
 
     if(isLoading) return <p>Cargando Sesiones...</p>
-    if(!data) return <p>No hay sesiones registradas</p>
-    return ( 
+    if(!data) return <p className="text-center">No hay sesiones registradas.</p>
+    
+    if(data) return ( 
         <div className="p-8">
             <header className="mb-8">
-                <h1 className="text-4xl font-serif">Buenos días, Licenciada Natalia</h1>
+                <h1 className="text-4xl font-serif">Hola !, {user?.nombre} {user?.apellido}</h1>
                 <p className="mt-2 text-gray-600 font-sans text-xl">Aquí está el resumen de tu consultorio</p>
             </header>
 

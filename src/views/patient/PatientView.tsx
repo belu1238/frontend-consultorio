@@ -17,8 +17,24 @@ export default function PatientView() {
     }) 
 
     if(isLoading) return <p>Cargando Pacientes...</p>
-    if(!data) return <p className="text-center">No hay pacientes registrados</p>
-
+    if(!data) { return (
+    <div>
+    <p className="text-center">No hay pacientes registrados 
+    </p>
+    <button 
+            type="button"
+            onClick={() => navigate(location.pathname + '?newPatient=true')}
+            className="text-emerald-600 hover:text-emerald-700 mx-auto block mt-4 cursor-pointer"
+        >
+            <span className="flex items-center justify-center gap-2">
+                <FaPlus className="h-5 w-5"/> 
+                Nuevo Paciente
+            </span>
+        </button>
+        <CreatePatient />
+    </div>
+    );
+}
     return ( 
         <>
         <div className="flex-1 overflow-y-auto p-8">
