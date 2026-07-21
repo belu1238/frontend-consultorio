@@ -17,19 +17,42 @@ export default function CreatePatient() {
   const show = modalPatient ? true : false;
 
   const activeFolderId = localStorage.getItem("folderId"); // Obtener el valor del lugar de atención activo desde el localStorage
-
+   console.log("activeFolderId", activeFolderId)
   const initialValues: PatientCreate = {
-    nombre: "",
-    apellido: "",
-    dni: 0,
-    fecha_nacimiento: "",
-    IdTipoLugarAtencion: activeFolderId ? parseInt(activeFolderId) : 0, 
+        nombre: "",
+        apellido: "",
+        dni: 0,
+        fecha_nacimiento: "",
+        horario_presupuesto: "",
+        edad: 0,
+        diagnostico: "",
+        medicacion: "",
+        detalle_paciente: "",
+        tutor1: { 
+            nombre: "",
+            apellido: "",
+            },
+        tutor2: {
+            nombre: "",
+            apellido: "",
+        },
+        IdObraSocial: 0,
+        numeroAfiliado: "",
+        fechaAlta: "",
+
+        IdDiagnostico: 0,
+        fecha: "",
+        colegio: "",
+        IdtipoEspecialidad: 0,
+        especialista: null as any,
+        IdTipoLugarAtencion: activeFolderId ? parseInt(activeFolderId) : 0, 
   };
 
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
 
@@ -97,7 +120,10 @@ export default function CreatePatient() {
                     onSubmit={handleSubmit(handleForm)}
                     noValidate // para evitar las validaciones de html5 y poder hacerla yo
                   >
-                    <PatientForm register={register} errors={errors} />
+                    <PatientForm
+                    control={control} 
+                    register={register} 
+                    errors={errors} />
                     <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
                       <button
                         type="button"

@@ -17,6 +17,8 @@ export const obraSocialSchema = z.object({
     nombre: z.string(),   
 })
 
+export type ObraSocial = z.infer<typeof obraSocialSchema>
+
 // Especialidades y profesionales
 export const tipoEspecialidadSchema = z.object({
     id: z.number(),
@@ -72,7 +74,7 @@ export const patientCardSchema = patientSchema.pick({
 
 
 export const patientCreateSchema = z.object({
-  nombre: z.string().min(1, "El nombre es obligatorio"),
+    nombre: z.string().min(1, "El nombre es obligatorio"),
     apellido: z.string().min(1, "El apellido es obligatorio"),
     dni: z.number().or(z.string().transform((val) => Number(val))),
     fecha_nacimiento: z.string(),
@@ -85,15 +87,24 @@ export const patientCreateSchema = z.object({
     detalle_paciente: z.string().optional(),
 
     // Tutores
-    tutor: z.object({
-        nombre: z.string(),
-        apellido: z.string(),
+    tutor1: z.object({
+        nombre: z.string().min(1, "El nombre del tutor es obligatorio"),
+        apellido: z.string().min(1, "El apellido del tutor es obligatorio"),
+    }),
+
+    tutor2: z.object({
+        nombre: z.string().optional(),
+        apellido: z.string().optional(),
     }),
     
     // Obra Social
     IdObraSocial: z.number().optional(),
     numeroAfiliado: z.string().optional(),
     fechaAlta: z.string().optional(),
+
+    // diagnostico
+    IdDiagnostico: z.number().optional(),
+    fecha: z.string().optional(),
 
     // Información escolar y profesionales
     colegio: z.string(),

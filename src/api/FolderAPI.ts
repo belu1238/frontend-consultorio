@@ -28,7 +28,7 @@ export async function getFolders(){
     }
 }
 
-export async function getFolderById(id: Folder['id']){
+export async function getFolderById(id: TipoLugarAtencion['id']){
     try {
         const { data } = await api(`/lugares/${id}`)
         return data
@@ -41,7 +41,7 @@ export async function getFolderById(id: Folder['id']){
 
 type FolderAPIType = {
     formData : TipoLugarAtencion,
-    folderId : Folder['id']
+    folderId : TipoLugarAtencion['id']
 }
 
 export async function editFolder({ formData, folderId } : FolderAPIType){
@@ -55,7 +55,7 @@ export async function editFolder({ formData, folderId } : FolderAPIType){
     }
 }
 
-export async function deleteFolder(id: Folder['id']) {
+export async function deleteFolder(id: TipoLugarAtencion['id']) {
     try {
         const { data } = await api.delete<string>(`/lugares/${id}`)
         return data
@@ -66,7 +66,7 @@ export async function deleteFolder(id: Folder['id']) {
     }
 }
 
-export async function getPatientByFolder(id: Folder['id']){
+export async function getPatientByFolder(id: TipoLugarAtencion['id']){
     try {
         const { data } = await api(`/lugares/${id}/pacientes`)
         const response = tipoLugarAtencionSchema.safeParse(data)
